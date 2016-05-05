@@ -10,3 +10,6 @@ env:
 after_success:
     "gulp deploy --FTP_USER=$FTP_USER --FTP_PASS=$FTP_PASS"
 
+branches:
+  only:
+    - master
