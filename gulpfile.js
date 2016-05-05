@@ -128,9 +128,7 @@ gulp.task( 'deploy', function () {
 
   // using base = '.' will transfer everything to /public_html correctly
   // turn off buffering in gulp.src for best performance
-
   return gulp.src( globs, { cwd: './dist', buffer: false } )
     .pipe( conn.newer( '/marklabenskidotcom' ) ) // only upload newer files
     .pipe( conn.dest( '/marklabenskidotcom' ) );
-
 } );
