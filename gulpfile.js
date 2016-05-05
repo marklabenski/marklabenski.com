@@ -1,3 +1,5 @@
+"use strict";
+
 const gulp = require('gulp');
 const ava = require('gulp-ava');
 
@@ -20,7 +22,10 @@ const ftp = require( 'vinyl-ftp' );
 const gutil = require('gulp-util');
 const chalk = require('chalk');
 
-
+const fs = require('fs');
+const tap = require('gulp-tap');
+const insert = require('gulp-insert');
+const path = require('path');
 
 function map_error(err) {
   if (err.fileName) {
@@ -78,11 +83,40 @@ gulp.task('browserify', function () {
   return bundle_js(bundler)
 });
 
-gulp.task('markdown', function () {
-  return gulp.src('src/md/**/*.md')
+gulp.task('markdown-common', function () {
+  return gulp.src('src/md/*.md')
     .pipe(markdown())
     .pipe(gulp.dest('./dist/pages'));
 });
+
+let counter = 0;
+const writeArticleArray = function writeArticleArray(filename) {
+  if(counter++ === 0) {
+    return "window.articles = [" + filename + ", ";
+  }
+  else {
+    return filename+ ", ";
+  }
+};
+
+
+gulp.task('markdown-articles', function (cb) {
+  const files = [];
+  let bundle = gulp.src('src/md/articles/*.md')
+    .pipe(tap(function(file, t) {
+      files.push("'" + path.basename(file.path) + "'");
+    }))
+    .pipe(markdown());
+
+
+  return bundle.pipe(gulp.dest('./dist/pages/articles')).on('finish', function() {
+    const articleList = 'window.articles = [' + files.join(',') + '];';
+
+    fs.writeFile('dist/js/article-list.js', articleList);
+  });
+});
+gulp.task('markdown', ['markdown-common', 'markdown-articles']);
+
 
 // Without sourcemaps
 gulp.task('browserify-production', function () {
@@ -108,7 +142,7 @@ gulp.task('root-files', () =>
     .pipe(gulp.dest('./dist'))
 );
 
-gulp.task('default', ['test', 'browserify', 'markdown', 'root-files', 'watchify']);
+gulp.task('default', ['test', 'markdown', 'browserify', 'root-files', 'watchify']);
 
 gulp.task('dist', ['browserify', 'markdown', 'root-files']);
 

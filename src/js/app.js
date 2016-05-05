@@ -1,4 +1,6 @@
-import { createStore } from 'redux'
+import { createStore } from 'redux';
+
+"use strict";
 
 const siteActions = function siteActions (type = "start", action) {
   const actionObject = { classActions: { add: [], remove: []} };
@@ -7,7 +9,6 @@ const siteActions = function siteActions (type = "start", action) {
       actionObject.classActions.remove.push('landing');
       actionObject.classActions.add.push('start');
       break;
-    case 'landing':
       actionObject.classActions.remove.push('start');
       actionObject.classActions.add.push('landing');
       break;
@@ -34,7 +35,8 @@ actionStore.subscribe(() => {
 );
 
 window.addEventListener('load', () => {
-  "use strict";
-  actionStore.dispatch({ type: 'landing' });
-});
 
+  actionStore.dispatch({ type: 'landing' });
+
+  console.log(window.articles);
+});
