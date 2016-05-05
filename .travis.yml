@@ -1,7 +1,6 @@
 language: node_js
 node_js: '5'
 before_script:
-- npm install
 - npm install -g gulp
 script: gulp dist
 env:
@@ -9,4 +8,4 @@ env:
   - secure: uP+YG60D4LfPLIqTi90EGJxqmZFal8xQzP7ZtBr7vrTD5haGOQ0dQSTxZZlt7W8vvrfjNlj4vVjsTD40lOjwzRLfCTQyiV9G3JdZSQpBBohQHsoA32uHqGS/nSmmebfjfra2/bvuHsktxGQ0O6CDcrSlo0QlM4D8Djn+z/Gkr7zrnHGJCt90/Hzq3GT6QKSn3nH7rNyTt7rw8fuVp8HZUY78lPV6JddakbP39570dospgreu/6Qxeq0eoIpB0n9QFkUAm22h7utFRagBvcIJdxOWB9y3+2ZHHp2TiT7RCmcsX1jzy4QsiVEckHC9XqM0EROGKB+XrDDOXFpMy38Owh/OiBoVuakX80QtodO8Ei4obJQ9mkmbWlVH8F2XOvsxEElKXBaaK8vn7ze61F+1QJPvY4rqRwQtm/0Pjf9uaNqGUlIAVmYl7fAraOyJa2iJ3K1UnpCwsidRuHrtXr140hJ3WEPpAz5mbELJk92uQmhjYInMh44D2EFLbOjsbf/sHDtoZ5ZC0/27CQy5hVHCI2t1Cu0U6xe5lxVj1ZKWNS51DhzeDegRc0zP/qLfsEOa2TxbF1djF3c+6AMznFgD+nFnr2Ee12dOai7JB/TmoC2WrmO2hJ3zyIf4A/Ey1MlYWiTAGLz1d8/AxoExarqprcYOo3D0xez9XkwvD46rC5Y=
   - secure: nBlzvdXG6qHqJmcVKqMXA9Cfqr1n9v04xQ/tWqP9wc/L6v/k726p5WQ4s3mnyjFRVpKIoumJnB9s+74IjMM6GhXkIqHVamj/NvOqhdSIqsi3COEbRlhrAALOzwlCjK5FBLyGDefv9L+mh3DuQOxiFUVvIp85gIKiytR7lnNmVPB4a4I3pYzKCwCVO/T/wA3rmGe6XLodS+f+KIhx9f961hvRvKOzeQ96yz5N5ZsVfEHSoaNrsvoLu+slo7PN8LiOF7PYPv4asPQdBzhFj+Unly2yxD3UJKjIVv33M71+DTvBRhP1yu2nwolfTK+lowRfJbjTDdh1qiy9u1uJ1SOJRTS69EJmysIRZDMTPUhE5PNS9VW/gtOWLt5SNu34gLv582eqlk9frY8+Npli0ICaUhBPbxR8T+I9byx/+JivsnWfJ1bY3+deiniPeIDvrXSkm7hJakcf0YVD2T0Rii+lZwF9YbMDhfLZlacdl49OF9hmkv+rhlBOzR9/O6Nhw+51qPU/7/e+s8LUqIKEnqnQHuBH2owo9yBc5HPKGOqwuFulES9afydsJa5sSqzUBDhkUcHExDUuwteE11dQJiGtXq/nydEA84DJwofXHub5M0kxhVmQQCoSj1BeXHkv/2layUy9KDf3fOvl0A/yq1//3KkKF2+6Ezm2oEtFmQ2QTFE=
 after_success:
-    "curl --ftp-create-dirs -T uploadfilename -u $FTP_USER:$FTP_PASS ftp://pixelgurke.de/marklabenski"
+    "curl --ftp-create-dirs -T ./dist/* -u $FTP_USER:$FTP_PASS ftp://pixelgurke.de/marklabenski"
