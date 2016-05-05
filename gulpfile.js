@@ -118,22 +118,22 @@ gulp.task( 'deploy', function () {
     host:     'ftp.swaray.de',
     user:     gutil.env.FTP_USER,
     password: gutil.env.FTP_PASS,
-    parallel: 10,
+    parallel: 1,
     log:      gutil.log
   } );
 
   var globs = [
-    './dist/pages/**',
-    './dist/css/**',
-    './dist/js/**',
-    './dist/index.html'
+    'pages/**',
+    'css/**',
+    'js/**',
+    'index.html'
   ];
 
   // using base = '.' will transfer everything to /public_html correctly
   // turn off buffering in gulp.src for best performance
 
-  return gulp.src( globs, { base: '.', buffer: false } )
-    .pipe( conn.newer( '/public_html/pixelgurke/marklabenski' ) ) // only upload newer files
-    .pipe( conn.dest( '/public_html/pixelgurke/marklabenski' ) );
+  return gulp.src( globs, { base: '.', cwd: './dist', buffer: false } )
+    .pipe( conn.newer( '/marklabenskidotcom' ) ) // only upload newer files
+    .pipe( conn.dest( '/marklabenskidotcom' ) );
 
 } );
