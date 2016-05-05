@@ -14,10 +14,13 @@ const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 
 const markdown = require('gulp-markdown');
+const ftp = require( 'vinyl-ftp' );
 
 /* nicer browserify errors */
 const gutil = require('gulp-util');
 const chalk = require('chalk');
+
+
 
 function map_error(err) {
   if (err.fileName) {
@@ -108,3 +111,29 @@ gulp.task('root-files', () =>
 gulp.task('default', ['test', 'browserify', 'markdown', 'root-files', 'watchify']);
 
 gulp.task('dist', ['browserify', 'markdown', 'root-files']);
+
+
+gulp.task( 'deploy', function () {
+  var conn = ftp.create( {
+    host:     'ftp.swaray.de',
+    user:     gutil.env.FTP_USER,
+    password: gutil.env.FTP_PASS,
+    parallel: 10,
+    log:      gutil.log
+  } );
+
+  var globs = [
+    './dist/pages/**',
+    './dist/css/**',
+    './dist/js/**',
+    './dist/index.html'
+  ];
+
+  // using base = '.' will transfer everything to /public_html correctly
+  // turn off buffering in gulp.src for best performance
+
+  return gulp.src( globs, { base: '.', buffer: false } )
+    .pipe( conn.newer( '/public_html/pixelgurke/marklabenski' ) ) // only upload newer files
+    .pipe( conn.dest( '/public_html/pixelgurke/marklabenski' ) );
+
+} );
